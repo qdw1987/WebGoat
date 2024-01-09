@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,6 +42,8 @@ import java.sql.Statement;
 @RestController
 @AssignmentHints(value = {"SqlStringInjectionHint5-1", "SqlStringInjectionHint5-2", "SqlStringInjectionHint5-3", "SqlStringInjectionHint5-4"})
 public class SqlInjectionLesson5 extends AssignmentEndpoint {
+
+    private static final Logger logger = LoggerFactory.getLogger(SqlInjectionLesson5.class);
 
     private final LessonDataSource dataSource;
 
@@ -79,6 +82,7 @@ public class SqlInjectionLesson5 extends AssignmentEndpoint {
         } catch (Exception e) {
             return failed(this).output(this.getClass().getName() + " : " + e.getMessage() + "<br> Your query was: " + query).build();
         }
+        logger.info("SQL injection vulnerability in injectableQuery method of SqlInjectionLesson5 class");
     }
 
     private boolean checkSolution(Connection connection) {
