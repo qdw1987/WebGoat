@@ -22,6 +22,7 @@
 
 package org.owasp.webgoat.lessons.cryptography;
 
+import java.security.SecureRandom;
 import org.owasp.webgoat.container.assignments.AssignmentEndpoint;
 import org.owasp.webgoat.container.assignments.AttackResult;
 import org.springframework.http.MediaType;
@@ -49,7 +50,7 @@ public class EncodingAssignment extends AssignmentEndpoint {
 		String basicAuth = (String) request.getSession().getAttribute("basicAuth");
 		String username = request.getUserPrincipal().getName();
 		if (basicAuth == null) {
-			String password = HashingAssignment.SECRETS[new Random().nextInt(HashingAssignment.SECRETS.length)];
+			String password = HashingAssignment.SECRETS[new SecureRandom().nextInt(HashingAssignment.SECRETS.length)];
 			basicAuth = getBasicAuth(username, password);
 			request.getSession().setAttribute("basicAuth", basicAuth);
 		}
