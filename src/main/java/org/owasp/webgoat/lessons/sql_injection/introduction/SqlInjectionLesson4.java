@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -45,6 +46,7 @@ import static java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE;
 @AssignmentHints(value = {"SqlStringInjectionHint4-1", "SqlStringInjectionHint4-2", "SqlStringInjectionHint4-3"})
 public class SqlInjectionLesson4 extends AssignmentEndpoint {
 
+    private static final Logger logger = LoggerFactory.getLogger(SqlInjectionLesson4.class);
     private final LessonDataSource dataSource;
 
     public SqlInjectionLesson4(LessonDataSource dataSource) {
@@ -65,6 +67,7 @@ public class SqlInjectionLesson4 extends AssignmentEndpoint {
                 ResultSet results = statement.executeQuery("SELECT phone from employees;");
                 StringBuffer output = new StringBuffer();
                 // user completes lesson if column phone exists
+                logger.info("SQL injection vulnerability in injectableQuery method of SqlInjectionLesson4 class");
                 if (results.first()) {
                     output.append("<span class='feedback-positive'>" + query + "</span>");
                     return success(this).output(output.toString()).build();

@@ -36,11 +36,13 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 @RestController
 @AssignmentHints(value = {"SqlStringInjectionHint.10.1", "SqlStringInjectionHint.10.2", "SqlStringInjectionHint.10.3", "SqlStringInjectionHint.10.4", "SqlStringInjectionHint.10.5", "SqlStringInjectionHint.10.6"})
 public class SqlInjectionLesson10 extends AssignmentEndpoint {
 
+    private static final Logger logger = LoggerFactory.getLogger(SqlInjectionLesson10.class);
     private final LessonDataSource dataSource;
 
     public SqlInjectionLesson10(LessonDataSource dataSource) {
@@ -64,6 +66,7 @@ public class SqlInjectionLesson10 extends AssignmentEndpoint {
 
                 if (results.getStatement() != null) {
                     results.first();
+                    logger.info("SQL injection vulnerability in injectableQueryAvailability method of SqlInjectionLesson10 class");
                     output.append(SqlInjectionLesson8.generateTable(results));
                     return failed(this).feedback("sql-injection.10.entries").output(output.toString()).build();
                 } else {

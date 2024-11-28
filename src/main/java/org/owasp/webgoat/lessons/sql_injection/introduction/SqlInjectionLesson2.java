@@ -37,12 +37,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import static java.sql.ResultSet.CONCUR_READ_ONLY;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import static java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE;
 
 
 @RestController
 @AssignmentHints(value = {"SqlStringInjectionHint2-1", "SqlStringInjectionHint2-2", "SqlStringInjectionHint2-3", "SqlStringInjectionHint2-4"})
 public class SqlInjectionLesson2 extends AssignmentEndpoint {
+
+    private static final Logger logger = LoggerFactory.getLogger(SqlInjectionLesson2.class);
 
     private final LessonDataSource dataSource;
 
@@ -63,6 +66,7 @@ public class SqlInjectionLesson2 extends AssignmentEndpoint {
             StringBuffer output = new StringBuffer();
 
             results.first();
+            logger.info("SQL injection vulnerability in injectableQuery method of SqlInjectionLesson2 class");
 
             if (results.getString("department").equals("Marketing")) {
                 output.append("<span class='feedback-positive'>" + query + "</span>");
