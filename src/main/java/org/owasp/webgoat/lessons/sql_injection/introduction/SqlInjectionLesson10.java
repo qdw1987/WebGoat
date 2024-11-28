@@ -55,12 +55,15 @@ public class SqlInjectionLesson10 extends AssignmentEndpoint {
 
     protected AttackResult injectableQueryAvailability(String action) {
         StringBuffer output = new StringBuffer();
-        String query = "SELECT * FROM access_log WHERE action LIKE '%" + action + "%'";
+        String query = "SELECT * FROM access_log WHERE action LIKE ?";// The query is now parameterized
 
         try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = null;
+            ResultSet results = null;
             try {
-                Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                ResultSet results = statement.executeQuery(query);
+                statement = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                statement.setString(1, '%' + action + '%');
+                results = statement.executeQuery();
 
                 if (results.getStatement() != null) {
                     results.first();
@@ -79,8 +82,14 @@ public class SqlInjectionLesson10 extends AssignmentEndpoint {
                 } else {
                     return success(this).feedback("sql-injection.10.success").build();
                 }
+            } finally {
+                if (results != null) {
+                    results.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
             }
-
         } catch (Exception e) {
             return failed(this).output("<span class='feedback-negative'>" + e.getMessage() + "</span>").build();
         }
